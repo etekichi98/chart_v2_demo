@@ -1,0 +1,267 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet"  type= "text/css" href="{{ url_for('static', filename='css/index.css') }}">
+    <script>
+        var $chart_style = '{{ style }}';
+        var $header_style = chart_color_to_header_color($chart_style);
+        var $code = '{{ code }}';
+        var $page_type = '{{ page_type }}';
+        var $stochastic = '{{ stochastic }}';
+        var $macd = '{{ macd }}';
+        var $chart_term = Number('{{ term }}');
+        var line_height = 22;
+        window.onresize = function change_height() {
+            document.getElementById('select_code').size = window.innerHeight/line_height - 1;
+            document.getElementById('chart_pane').height = window.innerHeight-52;
+            document.getElementById('chart_pane').width = window.innerWidth-170;
+        }
+        window.onload = function(){
+            document.getElementById('select_code').size = window.innerHeight/line_height - 1;
+            document.getElementById('chart_pane').height = window.innerHeight-52;
+            document.getElementById('chart_pane').width = window.innerWidth-170;
+            document.getElementById('site-header-id').style = $header_style;
+{% set wl = namespace(cnt = 0) %}
+{% for watch in watches %}
+{% set wl.cnt = wl.cnt + 1 %}
+{% endfor %}
+            var wl_height;
+            if( {{wl.cnt}}>8 ){
+                wl_height = 810;
+            }
+            else{
+                wl_height = {{wl.cnt}}*100+10;
+            }
+            document.getElementById('menu-watchlist-id').style.height = ''+wl_height+'%';
+{% set nl = namespace(cnt = 0) %}
+{% for listfile in listfiles %}
+{% set nl.cnt = nl.cnt + 1 %}
+{% endfor %}
+            var nl_height;
+            if( {{nl.cnt}}>8 ){
+                nl_height = 810;
+            }
+            else{
+                nl_height = {{nl.cnt}}*100+10;
+            }
+            document.getElementById('menu-ai-id').style.height = ''+nl_height+'%';
+            document.getElementById('menu-change_color-id').style.height = '810%';
+            change_page_type($page_type);
+        }
+        function disp_chart() {
+            var value = document.getElementById("select_code").value;
+            disp_chart_by_code(value)
+        }
+        function disp_chart_by_code(arg_code) {
+            if( arg_code.length==4 && Number(arg_code)>=1000 ){
+                $code = arg_code;   
+                var url = encodeURI('/candle2?code='+arg_code+'&term='+$chart_term+'&style='+$chart_style+'&header_style='+encodeURIComponent($header_style)+'&stochastic='+$stochastic+'&macd='+$macd);
+                document.getElementById('chart_pane').contentWindow.location.replace(url);
+            }
+        }
+        function disp_table_by_code(arg_code) {
+            if( arg_code.length==4 && Number(arg_code)>=1000 ){
+                var url = '/table?code='+arg_code+'&term=40&header_style='+encodeURIComponent($header_style);
+                document.getElementById('chart_pane').contentWindow.location.replace(url);
+            }
+        }
+        function chart_color_to_header_color(chart_color){
+            var header_color;
+            switch(chart_color){
+            case 'binance':
+                header_color="--home_menu_color:#c71071; --menu_color:#81ac28; --title_color:#81ac28; --base_color:#ffffff;"
+                break;
+            case 'blueskies':
+                header_color="--home_menu_color:#444444; --menu_color:#146eb4; --title_color:#146eb4; --base_color:#ffffff;";
+                break;
+            case 'brasil':
+                header_color="--home_menu_color:#f2e541; --menu_color:#569d42; --title_color:#569d42; --base_color:#ffffff;";
+                break;
+            case 'charles':
+                header_color="--home_menu_color:#b52127; --menu_color:#3f7717; --title_color:#3f7717; --base_color:#ffffff;";
+                break;
+            case 'checkers':
+                header_color="--home_menu_color:#db4a4a; --menu_color:#6f6f6f; --title_color:#6f6f6f; --base_color:#ffffff;";
+                break;
+            case 'classic':
+                header_color="--home_menu_color:#da3c41; --menu_color:#1b2538; --title_color:#1b2538; --base_color:#ffffff;";
+                break;
+            case 'default':
+                header_color="--home_menu_color:#4e71b0; --menu_color:#4e71b0; --title_color:#4e71b0; --base_color:#ffffff;";
+                break;
+            case 'mike':
+                header_color="--home_menu_color:#7b86a8; --menu_color:#000000; --title_color:#7b86a8; --base_color:#000000;";
+                break;
+            case 'nightclouds':
+                header_color="--home_menu_color:#1e90ff; --menu_color:#16244e; --title_color:#1e90ff; --base_color:#000000;";
+                break;
+            case 'sas':
+                header_color="--home_menu_color:#931423; --menu_color:#1c2062; --title_color:#1c2062; --base_color:#ffffff;";
+                break;
+            case 'starsandstripes':
+                header_color="--home_menu_color:#931423; --menu_color:#1c2062; --title_color:#1c2062; --base_color:#ffffff;";
+                break;
+            case 'yahoo':
+                header_color="--home_menu_color:#4d72ab; --menu_color:#4d72ab; --title_color:#4d72ab; --base_color:#ffffff;";
+                break;
+            default:
+                header_color="--home_menu_color:#da3c41; --menu_color:#1b2538; --title_color:#1b2538; --base_color:#ffffff;";
+                break;
+            }
+            return header_color;
+        }
+        function change_color(color) {
+            $page_type = 'chart';
+            $chart_style = color;
+            $header_style = chart_color_to_header_color(color);
+            document.getElementById('site-header-id').style = $header_style;
+            disp_chart_by_code($code);
+        }
+        function change_page_type(page_type) {
+            if( page_type=='chart' ){
+                $page_type = 'chart';
+                disp_chart_by_code($code);
+            }
+            else if( page_type=='table' ){
+                $page_type = 'table';
+                disp_table_by_code($code);
+            }
+        }
+        function change_term() {
+            let term = prompt('チャート表示期間：');
+            temp_term = Number(term);
+            if( temp_term<=25 ){
+                return;
+            }
+            $chart_term = temp_term;
+            $page_type = 'chart';
+            disp_chart_by_code($code);
+        }
+        function change_stochastic() {
+            if( $stochastic=='True' ){
+                $stochastic = 'False';
+                document.getElementById('menu-stkyas-id').textContent = 'Stochastic ON';
+            }
+            else{
+                $stochastic = 'True';
+                document.getElementById('menu-stkyas-id').textContent = 'Stochastic OFF';
+            }
+            $page_type = 'chart';
+            disp_chart_by_code($code);
+        }
+        function change_macd() {
+            if( $macd=='True' ){
+                $macd = 'False';
+                document.getElementById('menu-macd-id').textContent = 'macd ON';
+            }
+            else{
+                $macd = 'True';
+                document.getElementById('menu-macd-id').textContent = 'macd OFF';
+            }
+            $page_type = 'chart';
+            disp_chart_by_code($code);
+        }
+        function change_watchfile(name){
+            var url = '/?code='+$code+'&page_type='+$page_type+'&term='+$chart_term+'&style='+$chart_style+'&stochastic='+$stochastic+'&macd='+$macd+'&watchfile='+name;
+            window.location.href = url;
+            window.open(url, '_self'); 
+        }
+        function change_listfile(name){
+            var url = '/?code='+$code+'&page_type='+$page_type+'&term='+$chart_term+'&style='+$chart_style+'&stochastic='+$stochastic+'&macd='+$macd+'&listfile='+name;
+            window.location.href = url;
+            window.open(url, '_self'); 
+        }
+        function change_home(){
+            var url = '/?code='+$code+'&page_type='+$page_type+'&term='+$chart_term+'&style='+$chart_style+'&stochastic='+$stochastic+'&macd='+$macd+'&listfile='+name;
+            window.location.href = url;
+            window.open(url, '_self'); 
+        }
+    </script>
+</head>
+<body>
+  <div class="site-page">
+    <div class="site-header" id="site-header-id" style="">
+      <ul class="menu">
+        <li class="menu__home">
+            <a onclick="change_home()" class="menu-link" style="text-decoration:none;" href="#"><img src="{{ url_for('static', filename='image/icon-home.png') }}" width="48" height="48"></a>
+        </li>
+        <li class="menu__single">
+            <img src="{{ url_for('static', filename='image/icon-watchlist.png') }}" width="48" height="48">
+            <div class="menu__sec">
+               <ul class="menu__second-level" id="menu-watchlist-id">
+{% for watchfile in watches %}
+                  <li onclick="change_watchfile('{{ watchfile.name }}')"><a class="menu-link" href="#">{{ watchfile.subject }}</a></li>
+{% endfor %}
+               </ul>
+            </div>
+        </li>
+        <li class="menu__single">
+            <img src="{{ url_for('static', filename='image/icon-ai.png') }}" width="48" height="48">
+            <div class="menu__sec">
+               <ul class="menu__second-level" id="menu-ai-id">
+{% for listfile in listfiles %}
+                  <li onclick="change_listfile('{{ listfile.name }}')"><a class="menu-link" href="#">{{ listfile.subject }}</a></li>
+{% endfor %}
+               </ul>
+            </div>
+        </li>
+        <li class="menu__single">
+            <img src="{{ url_for('static', filename='image/icon-candle.png') }}" width="48" height="48">
+            <div class="menu__sec">
+               <ul class="menu__second-level">
+                  <li onclick="change_page_type('chart')"><a class="menu-link" href="#">チャート</a></li>
+                  <li onclick="change_page_type('table')"><a class="menu-link" href="#">時系列</a></li>
+               </ul>
+            </div>
+        </li>
+        <li class="menu__single">
+            <img src="{{ url_for('static', filename='image/icon-pallet.png') }}" width="48" height="48">
+            <div class="menu__sec">
+               <ul class="menu__second-level" id="menu-change_color-id">
+                  <li onclick="change_color('binance')"><a class="menu-link" href="#">binance</a></li>
+                  <li onclick="change_color('blueskies')"><a class="menu-link" href="#">blueskies</a></li>
+                  <li onclick="change_color('brasil')"><a class="menu-link" href="#">brasil</a></li>
+                  <li onclick="change_color('charles')"><a class="menu-link" href="#">charles</a></li>
+                  <li onclick="change_color('checkers')"><a class="menu-link" href="#">checkers</a></li>
+                  <li onclick="change_color('classic')"><a class="menu-link" href="#">classic</a></li>
+                  <li onclick="change_color('default')"><a class="menu-link" href="#" selected>default</a></li>
+                  <li onclick="change_color('mike')"><a class="menu-link" href="#">mike</a></li>
+                  <li onclick="change_color('nightclouds')"><a class="menu-link" href="#">nightclouds</a></li>
+                  <li onclick="change_color('sas')"><a class="menu-link" href="#">sas</a></li>
+                  <li onclick="change_color('starsandstripes')"><a class="menu-link" href="#">starsandstripes</a></li>
+                  <li onclick="change_color('yahoo')"><a class="menu-link" href="#">yahoo</a></li>
+               </ul>
+            </div>
+        </li>
+        <li class="menu__single">
+            <img src="{{ url_for('static', filename='image/icon-config.png') }}" width="48" height="48">
+            <div class="menu__sec">
+               <ul class="menu__second-level">
+                  <li onclick="change_term()"><a class="menu-link" href="#">表示期間</a></li>
+                  <li onclick="change_stochastic()"><a class="menu-link" id="menu-stkyas-id" href="#">Stochastic OFF</a></li>
+                  <li onclick="change_macd()"><a class="menu-link" id="menu-macd-id" href="#">macd OFF</a></li>
+               </ul>
+            </div>
+        </li>
+      </ul>
+    </div>
+    <div class="site-main">
+        <div id="name_list">
+        <form>
+            <select id="select_code" size="29" onchange="disp_chart()">
+{% for member in members %}
+                    <option value="{{ member.code}}">{{ member.code}} {{ member.name }}</option>
+{% endfor %}
+            </select>
+        </form>
+        </div>
+        <iframe id="chart_pane"
+            align="top"
+            /*width = 800*/
+            /*height = 575*/
+            src="/help">
+        </iframe>
+    </div>
+  </div>
+</body>
+</html>

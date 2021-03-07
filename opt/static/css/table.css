@@ -1,0 +1,31 @@
+:root {
+  --title_color: #4e71b0;
+  --base_color: #ffffff;
+}
+body{
+    background-color: var(--base_color);
+}
+.title_header{
+    padding: 0px;
+    margin-bottom: 0px;
+    border: 0px dotted #333333;
+    background-color: var(--title_color);
+    color: #ffffff;
+}
+table{
+  border-collapse:collapse;
+  margin:0 auto;
+}
+td,th{
+  padding:2px 8px;
+}
+th{
+  color:#fff;
+  background:#005ab3;
+}
+table tr:nth-child(even){
+  background:#ffffff;
+}
+table tr:nth-child(odd){
+  background:#e6f2ff;
+}

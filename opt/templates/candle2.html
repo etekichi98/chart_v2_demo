@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>{{ title }}</title>
+        <link rel="stylesheet" type= "text/css" href= "{{ url_for('static', filename='css/candle2.css') }}">
+        <script>
+            var $header_style = decodeURIComponent('{{ header_style }}');
+            var Col = "red"; // 十字カーソルの色
+            var my = 0;
+            var mx = 0;
+            window.onload = function () {
+                document.body.style.cursor = "auto";
+                document.getElementById('title_header-id').style = $header_style;
+                document.getElementById("VerticalLine").style.backgroundColor = Col;
+                document.getElementById("VerticalLine").style.top = 0;
+                document.getElementById("VerticalLine").style.height = innerHeight-1;
+                document.getElementById("HorizontalLine").style.backgroundColor = Col;
+                document.getElementById("HorizontalLine").style.left = 0;
+                document.getElementById("HorizontalLine").style.width = innerWidth-1;
+            };
+            document.onmousemove = function mouse_move(e){
+                mx = e.pageX;
+                my = e.pageY;
+                if(mx < 1) mx = 1;
+                if(mx > innerWidth-2) mx = innerWidth - 2;
+                if(my < 1) my = 1;
+                if(my > innerHeight-2) my = innerHeight - 2;
+                document.getElementById("VerticalLine").style.left = mx;
+                document.getElementById("HorizontalLine").style.top = my;
+            }
+        </script>
+    </head>
+    <body id="title_header-id" style="">
+        <script>
+            document.body.style.cursor = "wait";
+        </script>
+        <div class="title_header">
+            <h1>{{ title }}</h1>
+        </div>
+        <p class="resizeimage">
+            <!--チャート画像-->
+            <img src="/candle?code={{ code }}&term={{ term }}&style={{ style }}&volume={{ volume }}&stochastic={{ stochastic }}&macd={{ macd }}&mav={{ mav }}"/>
+            <!--十字カーソル-->
+            <div class="CrossCursor" id="VerticalLine"> </div>
+            <div class="CrossCursor" id="HorizontalLine"> </div>
+        </p>
+    </body>
+</html>

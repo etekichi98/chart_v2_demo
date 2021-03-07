@@ -1,0 +1,25 @@
+:root {
+  --title_color: #4e71b0;
+  --base_color: #ffffff;
+}
+body{
+    background-color: var(--base_color);
+}
+.CrossCursor{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 1px;
+    height: 1px;
+    font-size: 1px;
+}
+.resizeimage img {
+    width: 100%;
+}
+.title_header{
+    padding: 0px;
+    margin-bottom: 0px;
+    border: 0px dotted #333333;
+    background-color: var(--title_color);
+    color: #ffffff;
+}
