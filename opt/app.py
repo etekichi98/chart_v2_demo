@@ -20,8 +20,8 @@ import pandas as pd
 #import mplfinance as mpf
 
 #DATA_PATH = "\\\\larkbox\larkbox\muzinzo\data/"
-#DATA_PATH = "/root/opt/share/data/"
-DATA_PATH = "./data/"
+DATA_PATH = "/root/opt/share/data/"
+#DATA_PATH = "./data/"
 
 app = Flask(__name__)
 CORS(app)

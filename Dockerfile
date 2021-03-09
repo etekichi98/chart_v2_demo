@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.9-slim
 USER root
 
 RUN apt-get update
@@ -9,6 +9,8 @@ ENV LANGUAGE ja_JP:ja
 ENV LC_ALL ja_JP.UTF-8
 ENV TZ JST-9
 ENV TERM xterm
+ENV DEBIAN_FRONTEND noninteractive
+ENV DEBCONF_NOWARNINGS yes
 
 RUN apt-get install -y vim
 RUN pip install --upgrade pip && \
