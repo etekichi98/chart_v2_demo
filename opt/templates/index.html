@@ -1,6 +1,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
     <link rel="stylesheet"  type= "text/css" href="{{ url_for('static', filename='css/index.css') }}">
     <script>
         var $chart_style = '{{ style }}';
@@ -12,15 +13,29 @@
         var $chart_term = Number('{{ term }}');
         var line_height = 22;
         window.onresize = function change_height() {
+          if( document.body.clientWidth>760 ){
             document.getElementById('select_code').size = window.innerHeight/line_height - 1;
             document.getElementById('chart_pane').height = window.innerHeight-52;
             document.getElementById('chart_pane').width = window.innerWidth-170;
+          }
+          else{
+            document.getElementById('select_code').size = 1;
+            document.getElementById('chart_pane').height = window.innerHeight-100;
+            document.getElementById('chart_pane').width = window.innerWidth;
+          }
         }
         window.onload = function(){
+          if( document.body.clientWidth>760 ){
             document.getElementById('select_code').size = window.innerHeight/line_height - 1;
             document.getElementById('chart_pane').height = window.innerHeight-52;
             document.getElementById('chart_pane').width = window.innerWidth-170;
-            document.getElementById('site-header-id').style = $header_style;
+          }
+          else{
+            document.getElementById('select_code').size = 1;
+            document.getElementById('chart_pane').height = window.innerHeight-100;
+            document.getElementById('chart_pane').width = window.innerWidth;
+          }
+          document.getElementById('site-header-id').style = $header_style;
 {% set wl = namespace(cnt = 0) %}
 {% for watch in watches %}
 {% set wl.cnt = wl.cnt + 1 %}
@@ -257,8 +272,6 @@
         </div>
         <iframe id="chart_pane"
             align="top"
-            /*width = 800*/
-            /*height = 575*/
             src="/help">
         </iframe>
     </div>
