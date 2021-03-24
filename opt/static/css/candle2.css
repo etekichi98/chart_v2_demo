@@ -23,3 +23,8 @@ body{
     background-color: var(--title_color);
     color: #ffffff;
 }
+@media screen and (max-width: 760px) {
+  .title_header{
+    display:none;
+  }
+}

@@ -47,7 +47,7 @@ select {
 }
 .site-main{
    position: fixed;
-   top: 48px;
+   top: 40px;
    color: #000;
    background: #fff;
 }
@@ -56,15 +56,15 @@ select {
     list-style: none;
     position: relative;
     width: 100%;
-    height: 50px;
+    height: 42px;
     max-width: 2500px;
     margin: 0 auto;
     background: var(--menu_color);
 }
 .menu > li {
     float: left;
-    height: 50px;
-    line-height: 50px;
+    height: 42px;
+    line-height: 42px;
 	padding: 0 20px;
 }
 .menu.li a {
@@ -169,7 +169,7 @@ li.menu__single ul.menu__second-level {
     background: var(--menu_color);
 }
 li.menu__single:hover ul.menu__second-level {
-    top: 48px; /* システムメニュープルダウン位置Y */
+    top: 40px; /* システムメニュープルダウン位置Y */
     visibility: visible;
     opacity: 1;
     width: auto;
@@ -192,7 +192,7 @@ li.menu__single:hover ul.menu__second-level {
   }
   #select_code {
     size: 1;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     width: 95%
   }
 }

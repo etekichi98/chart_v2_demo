@@ -198,10 +198,10 @@
     <div class="site-header" id="site-header-id" style="">
       <ul class="menu">
         <li class="menu__home">
-            <a onclick="change_home()" class="menu-link" style="text-decoration:none;" href="#"><img src="{{ url_for('static', filename='image/icon-home.png') }}" width="48" height="48"></a>
+            <a onclick="change_home()" class="menu-link" style="text-decoration:none;" href="#"><img src="{{ url_for('static', filename='image/icon-home.png') }}" width="40" height="40"></a>
         </li>
         <li class="menu__single">
-            <img src="{{ url_for('static', filename='image/icon-watchlist.png') }}" width="48" height="48">
+            <img src="{{ url_for('static', filename='image/icon-watchlist.png') }}" width="40" height="40">
             <div class="menu__sec">
                <ul class="menu__second-level" id="menu-watchlist-id">
 {% for watchfile in watches %}
@@ -211,7 +211,7 @@
             </div>
         </li>
         <li class="menu__single">
-            <img src="{{ url_for('static', filename='image/icon-ai.png') }}" width="48" height="48">
+            <img src="{{ url_for('static', filename='image/icon-ai.png') }}" width="40" height="40">
             <div class="menu__sec">
                <ul class="menu__second-level" id="menu-ai-id">
 {% for listfile in listfiles %}
@@ -221,7 +221,7 @@
             </div>
         </li>
         <li class="menu__single">
-            <img src="{{ url_for('static', filename='image/icon-candle.png') }}" width="48" height="48">
+            <img src="{{ url_for('static', filename='image/icon-candle.png') }}" width="40" height="40">
             <div class="menu__sec">
                <ul class="menu__second-level">
                   <li onclick="change_page_type('chart')"><a class="menu-link" href="#">チャート</a></li>
@@ -230,7 +230,7 @@
             </div>
         </li>
         <li class="menu__single">
-            <img src="{{ url_for('static', filename='image/icon-pallet.png') }}" width="48" height="48">
+            <img src="{{ url_for('static', filename='image/icon-pallet.png') }}" width="40" height="40">
             <div class="menu__sec">
                <ul class="menu__second-level" id="menu-change_color-id">
                   <li onclick="change_color('binance')"><a class="menu-link" href="#">binance</a></li>
@@ -249,7 +249,7 @@
             </div>
         </li>
         <li class="menu__single">
-            <img src="{{ url_for('static', filename='image/icon-config.png') }}" width="48" height="48">
+            <img src="{{ url_for('static', filename='image/icon-config.png') }}" width="40" height="40">
             <div class="menu__sec">
                <ul class="menu__second-level">
                   <li onclick="change_term()"><a class="menu-link" href="#">表示期間</a></li>
