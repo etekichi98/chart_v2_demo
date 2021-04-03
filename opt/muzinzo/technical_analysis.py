@@ -89,14 +89,22 @@ def calc_stochastic(df, term):
     stochastic['DL'] = 20
     return stochastic
 
-def technical_analysis(df):
-    mav = calc_mav(df, 5, 25, 75)
-    stochastic = calc_stochastic(df, 14)
-    macd = calc_macd(df, 12, 26, 9)
-    return mav, stochastic, macd
+def calc_rsi(df, term):
+    rsi = pd.DataFrame()
+    rsi['diff'] = df['Close'].diff()    
+    f_plus = lambda x: x if x > 0 else 0
+    f_minus = lambda x: x if x < 0 else 0
+    rsi['diff+'] = rsi['diff'].map(f_plus)
+    rsi['diff-'] = rsi['diff'].map(f_minus)
+    rsi['rs'] = rsi['diff+'].rolling(window=term, center=False).mean()\
+        / rsi['diff-'].abs().rolling(window=term, center=False).mean()
+    rsi['rsi'] = 100.0 - (100.0 / (1.0 + rsi['rs']))
+    rsi['UL'] = 80
+    rsi['DL'] = 20
+    return rsi
 
 def save_csv_file(out_path, df):
-    mav, stochastic, macd = technical_analysis(df)
+    macd = calc_macd(df, 12, 26, 9)
     with open(out_path,'w') as f:
         for i in range(len(df)):
             date_str = str(df.index[i])

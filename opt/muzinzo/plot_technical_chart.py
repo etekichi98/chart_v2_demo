@@ -19,10 +19,13 @@ def calc_ylim(ser):
     else:
         return 0, min1
     
-def generate_technical_addplot(df, f_volume, f_mav, f_stochastic, f_macd):
+def generate_technical_addplot(df, f_volume, f_mav, f_stochastic, f_rsi, f_macd):
     panel_no = 0
     if f_volume: panel_no = panel_no + 1
-    mav, stochastic, macd = mzt.technical_analysis(df)    
+    mav = mzt.calc_mav(df, 5, 25, 75)
+    stochastic = mzt.calc_stochastic(df, 14)
+    macd = mzt.calc_macd(df, 12, 26, 9)
+    rsi = mzt.calc_rsi(df, 14)
     mh, ml = calc_ylim(macd['macd'])
     sh, sl = calc_ylim(macd['signal'])
     apd_oscilator = []
@@ -31,14 +34,18 @@ def generate_technical_addplot(df, f_volume, f_mav, f_stochastic, f_macd):
         apd_oscilator.append(
             mpf.make_addplot((stochastic[['%D', '%SD', 'UL', 'DL']]),
                          ylim=[0, 100],
-                         #ylabel='stocastics',
+                         panel=panel_no))
+    if f_rsi:
+        panel_no = panel_no + 1
+        apd_oscilator.append(
+            mpf.make_addplot((rsi[['rsi', 'UL', 'DL']]),
+                         ylim=[0, 100],
                          panel=panel_no))
     if f_macd:
         panel_no = panel_no + 1
         apd_oscilator.append(mpf.make_addplot((macd[['macd', 'signal']]),
                          ylim=[min(ml, sl), max(mh, sh)],
-                         #ylabel='macd',
-                         panel=panel_no))
+                        panel=panel_no))
         apd_oscilator.append(mpf.make_addplot((macd['diff+']), type='bar', color='r',
                          panel=panel_no))
         apd_oscilator.append(mpf.make_addplot((macd['diff-']), type='bar', color='b',
@@ -50,10 +57,10 @@ def generate_technical_addplot(df, f_volume, f_mav, f_stochastic, f_macd):
     return apd_oscilator
 
 def generate_technical_chart(title, df, volume=True, mav=True, 
-                             stochastic=True, macd=True,
+                             stochastic=True, rsi=True, macd=True,
                              style='default', path=None):
     apd_oscilator = generate_technical_addplot(df, 
-                    volume, mav, stochastic, macd)
+                    volume, mav, stochastic, rsi, macd)
     if path:
         mpf.plot(df, type='candle', volume=volume,
                  title=title, style=style,

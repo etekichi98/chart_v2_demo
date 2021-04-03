@@ -54,6 +54,7 @@ def index():
     style = request.args.get('style', default="default", type=str)
     term = request.args.get('term', default=120, type=int)
     stochastic = str2bool(request.args.get('stochastic', default="True", type=str))
+    rsi = str2bool(request.args.get('rsi', default="True", type=str))
     macd = str2bool(request.args.get('macd', default="True", type=str))
 
     llist_path = mz.get_database_path() + 'lists/*.txt'
@@ -99,7 +100,7 @@ def index():
     return render_template("index.html", title=title,
                            code=arg_code, page_type=page_type,
                            style=style, term=term,
-                           stochastic=stochastic, macd=macd,
+                           stochastic=stochastic, rsi=rsi, macd=macd,
                            listfiles=lfiles, watches=wfiles,
                            selected=None, members=sl)
 
@@ -125,6 +126,7 @@ def candle2():
     header_style = request.args.get('header_style', default="--home_menu_color:#4e71b0; --menu_color:#4e71b0; --title_color:#81ac28; --bg_color:#ffffff;", type=str)
     volume = request.args.get('volume', default="True", type=str)
     stochastic = str2bool(request.args.get('stochastic', default="True", type=str))
+    rsi = str2bool(request.args.get('rsi', default="True", type=str))
     macd = str2bool(request.args.get('macd', default="True", type=str))
     mav = str2bool(request.args.get('mav', default="True", type=str))
 
@@ -133,7 +135,7 @@ def candle2():
                            code=code, term=term,
                            style=style, header_style=header_style,
                            volume=volume, stochastic=stochastic, 
-                           macd=macd, mav=mav)
+                           rsi=rsi, macd=macd, mav=mav)
 
 # http://サーバ:5000/candle?code=1001&term=200&volume=True
 @app.route("/candle")
@@ -143,6 +145,7 @@ def candle():
     style = request.args.get('style', default="default", type=str)
     volume = str2bool(request.args.get('volume', default="True", type=str))
     stochastic = str2bool(request.args.get('stochastic', default="True", type=str))
+    rsi = str2bool(request.args.get('rsi', default="True", type=str))
     macd = str2bool(request.args.get('macd', default="True", type=str))
     mav = str2bool(request.args.get('mav', default="True", type=str))
     
@@ -150,7 +153,7 @@ def candle():
     #style  = mpf.make_mpf_style(rc={"font.family":'IPAexGothic'})
     #style = 'yahoo'
     mz.plot_chart(code, term, title='', style=style, volume=volume,
-                  stochastic=stochastic, macd=macd, mav=mav)
+                  stochastic=stochastic, rsi=rsi, macd=macd, mav=mav)
     plt.savefig(image, format='png')
     image.seek(0)
     return send_file(image, attachment_filename="image.png")

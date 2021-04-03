@@ -133,6 +133,9 @@ ul#menu-change_color-id.menu__second-level{ /* change_colorメニューのスク
     height: 800%; /* メニュー項目8個分 */
     width: 220px;
 }
+ul#menu-config-id.menu__second-level{
+    height: 400%; /* メニュー項目4個分 */
+}
 .menu__second-level {
     display: inline-block;
 }

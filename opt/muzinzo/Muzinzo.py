@@ -29,28 +29,28 @@ class Muzinzo:
             return ''
     
     def plot_chart(self, code, term=200, style='default', title=None,
-                  volume=True, stochastic=True, macd=True, mav=True):
+                  volume=True, stochastic=True, rsi=True, macd=True, mav=True):
         if title==None:
             title = str(code)+' '+self.get_name(code)
+        df = self.load_stock_price_timeslice(code, term)
+        chart.generate_technical_chart(title, df, style=style,
+            volume=volume, stochastic=stochastic, rsi=rsi, macd=macd, mav=mav)
+
+    def load_stock_price_timeslice(self, code, term=200):
         code_dir = int(code/1000)*1000
         input_path = self.database_path + str(code_dir) + "/" + str(code) + ".csv"
-        df = loader.load_stock_price_csv(input_path, adjust=True, term=term)
-        chart.generate_technical_chart(title, df, style=style,
-            volume=volume, stochastic=stochastic, macd=macd, mav=mav)
+        return self.load_stock_price_csv(input_path, term=term)
+        
+    def load_stock_price_csv(self, input_path, term=200):
+        return loader.load_stock_price_csv(input_path, term=term)
 
     def make_chart(self, code, term=100, style='default', path=None):
-        #print(code)
-        code_dir = int(code/1000)*1000
-        input_path = self.database_path + str(code_dir) + "/" + str(code) + ".csv"
+        df = self.load_stock_price_timeslice(code, term)
         title = str(code)+' '+self.get_name(code)
-        df = loader.load_stock_price_csv(input_path, term=term)
         chart.generate_technical_chart(title, df, style=style, path=path)
 
     def make_table(self, code, term=100):
-        code_dir = int(code/1000)*1000
-        input_path = self.database_path + str(code_dir) + "/" + str(code) + ".csv"
-        df = loader.load_stock_price_csv(input_path, term=term)
-        return df        
+        return self.load_stock_price_timeslice(code, term)
 
     def get_recent_day(self):
         input_path = self.database_path + "1000/1001.csv"

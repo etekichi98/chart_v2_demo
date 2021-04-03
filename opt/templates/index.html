@@ -9,6 +9,7 @@
         var $code = '{{ code }}';
         var $page_type = '{{ page_type }}';
         var $stochastic = '{{ stochastic }}';
+        var $rsi = '{{ rsi }}';
         var $macd = '{{ macd }}';
         var $chart_term = Number('{{ term }}');
         var line_height = 22;
@@ -70,7 +71,7 @@
         function disp_chart_by_code(arg_code) {
             if( arg_code.length==4 && Number(arg_code)>=1000 ){
                 $code = arg_code;   
-                var url = encodeURI('/candle2?code='+arg_code+'&term='+$chart_term+'&style='+$chart_style+'&header_style='+encodeURIComponent($header_style)+'&stochastic='+$stochastic+'&macd='+$macd);
+                var url = encodeURI('/candle2?code='+arg_code+'&term='+$chart_term+'&style='+$chart_style+'&header_style='+encodeURIComponent($header_style)+'&stochastic='+$stochastic+'&rsi='+$rsi+'&macd='+$macd);
                 document.getElementById('chart_pane').contentWindow.location.replace(url);
             }
         }
@@ -164,6 +165,18 @@
             $page_type = 'chart';
             disp_chart_by_code($code);
         }
+        function change_rsi() {
+            if( $rsi=='True' ){
+                $rsi = 'False';
+                document.getElementById('menu-rsi-id').textContent = 'Rsi ON';
+            }
+            else{
+                $rsi = 'True';
+                document.getElementById('menu-rsi-id').textContent = 'Rsi OFF';
+            }
+            $page_type = 'chart';
+            disp_chart_by_code($code);
+        }
         function change_macd() {
             if( $macd=='True' ){
                 $macd = 'False';
@@ -177,17 +190,17 @@
             disp_chart_by_code($code);
         }
         function change_watchfile(name){
-            var url = '/?code='+$code+'&page_type='+$page_type+'&term='+$chart_term+'&style='+$chart_style+'&stochastic='+$stochastic+'&macd='+$macd+'&watchfile='+name;
+            var url = '/?code='+$code+'&page_type='+$page_type+'&term='+$chart_term+'&style='+$chart_style+'&stochastic='+$stochastic+'&rsi='+$rsi+'&macd='+$macd+'&watchfile='+name;
             window.location.href = url;
             window.open(url, '_self'); 
         }
         function change_listfile(name){
-            var url = '/?code='+$code+'&page_type='+$page_type+'&term='+$chart_term+'&style='+$chart_style+'&stochastic='+$stochastic+'&macd='+$macd+'&listfile='+name;
+            var url = '/?code='+$code+'&page_type='+$page_type+'&term='+$chart_term+'&style='+$chart_style+'&stochastic='+$stochastic+'&rsi='+$rsi+'&macd='+$macd+'&listfile='+name;
             window.location.href = url;
             window.open(url, '_self'); 
         }
         function change_home(){
-            var url = '/?code='+$code+'&page_type='+$page_type+'&term='+$chart_term+'&style='+$chart_style+'&stochastic='+$stochastic+'&macd='+$macd+'&listfile='+name;
+            var url = '/?code='+$code+'&page_type='+$page_type+'&term='+$chart_term+'&style='+$chart_style+'&stochastic='+$stochastic+'&rsi='+$rsi+'&macd='+$macd+'&listfile='+name;
             window.location.href = url;
             window.open(url, '_self'); 
         }
@@ -251,9 +264,10 @@
         <li class="menu__single">
             <img src="{{ url_for('static', filename='image/icon-config.png') }}" width="40" height="40">
             <div class="menu__sec">
-               <ul class="menu__second-level">
+               <ul class="menu__second-level" id="menu-config-id">
                   <li onclick="change_term()"><a class="menu-link" href="#">表示期間</a></li>
                   <li onclick="change_stochastic()"><a class="menu-link" id="menu-stkyas-id" href="#">Stochastic OFF</a></li>
+                  <li onclick="change_rsi()"><a class="menu-link" id="menu-rsi-id" href="#">Rsi OFF</a></li>
                   <li onclick="change_macd()"><a class="menu-link" id="menu-macd-id" href="#">macd OFF</a></li>
                </ul>
             </div>
